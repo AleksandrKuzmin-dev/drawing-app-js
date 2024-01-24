@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приложение для рисования на JavaScript</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+<body>
+    <main>
+        <div class="container">
+            <div class="toolbar">
+                <div class="toolbar__section">
+                    <h2 class="toolbar__title">Фигуры</h2>
+                    <ul class="toolbar__options">
+                        <li class="toolbar__option">
+                            <img class="toolbar__option-img" alt="" src="./assets/icons/rectangle.svg">
+                            <span class="toolbar__option-name">Прямоугольник</span>
+                        </li>
+                        <li class="toolbar__option">
+                            <img class="toolbar__option-img" alt="" src="./assets/icons/circle.svg">
+                            <span class="toolbar__option-name">Круг</span>
+                        </li>
+                        <li class="toolbar__option">
+                            <img class="toolbar__option-img" alt="" src="./assets/icons/triangle.svg">
+                            <span class="toolbar__option-name">Треугольник</span>
+                        </li>
+                        <li class="toolbar__option">
+                            <input type="checkbox" class="toolbar__fill-color" id="toolbar__fill-color">
+                            <label class="toolbar__fill-color-name" for="toolbar__fill-color">Заливка</label>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="toolbar__section">
+                    <h2 class="toolbar__title">Настройки</h2>
+                    <ul class="toolbar__options">
+                        <li class="toolbar__option">
+                            <img class="toolbar__option-img" alt="" src="./assets/icons/brush.svg">
+                            <span class="toolbar__option-name">Кисть</span>
+                        </li>
+
+                        <li class="toolbar__option">
+                            <img class="toolbar__option-img" alt="" src="./assets/icons/eraser.svg">
+                            <span class="toolbar__option-name">Ластик</span>
+                        </li>
+
+                        <li class="toolbar__option">
+                            <input type="range" min="1" max="30" class="toolbar__brush-size">
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="toolbar__section">
+                    <h2 class="toolbar__title">Настройки цвета</h2>
+                    <ul class="toolbar__options-colors">
+                        <li class="toolbar__option-color"></li>
+                        <li class="toolbar__option-color"></li>
+                        <li class="toolbar__option-color"></li>
+                        <li class="toolbar__option-color"></li>
+                        <li class="toolbar__option-color">
+                            <input type="color">
+                        </li>
+                        
+                    </ul>
+                </div>
+
+                <div class="toolbar__btn-section">
+                    <button class="toolbar__clear-btn toolbar__btn">Очистить холст</button>
+                    <button class="toolbar__save-img toolbar__btn">Сохранить изображение</button>
+                </div>
+            </div>
+            <div class="drawing-board">
+                <canvas class="drawing-board__canvas" width="800px" height="500px"></canvas>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
