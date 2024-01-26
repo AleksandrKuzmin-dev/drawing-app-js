@@ -61,6 +61,11 @@ input[type="color"]{
     gap: 8px;
     align-items: center;
   }
+  &__option-fill {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
 
   &__option-img {
     width: 17px;

@@ -13,19 +13,19 @@
                 <div class="toolbar__section">
                     <h2 class="toolbar__title">Фигуры</h2>
                     <ul class="toolbar__options">
-                        <li class="toolbar__option">
+                        <li class="toolbar__option" data-shapes="rectangle">
                             <img class="toolbar__option-img" alt="" src="./assets/icons/rectangle.svg">
                             <span class="toolbar__option-name">Прямоугольник</span>
                         </li>
-                        <li class="toolbar__option">
+                        <li class="toolbar__option" data-shapes="circle">
                             <img class="toolbar__option-img" alt="" src="./assets/icons/circle.svg">
                             <span class="toolbar__option-name">Круг</span>
                         </li>
-                        <li class="toolbar__option">
+                        <li class="toolbar__option" data-shapes="triangle">
                             <img class="toolbar__option-img" alt="" src="./assets/icons/triangle.svg">
                             <span class="toolbar__option-name">Треугольник</span>
                         </li>
-                        <li class="toolbar__option">
+                        <li class="toolbar__option-fill">
                             <input type="checkbox" class="toolbar__fill-color" id="toolbar__fill-color">
                             <label class="toolbar__fill-color-name" for="toolbar__fill-color">Заливка</label>
                         </li>
@@ -35,18 +35,18 @@
                 <div class="toolbar__section">
                     <h2 class="toolbar__title">Настройки</h2>
                     <ul class="toolbar__options">
-                        <li class="toolbar__option">
+                        <li class="toolbar__option active" data-type="brush">
                             <img class="toolbar__option-img" alt="" src="./assets/icons/brush.svg">
                             <span class="toolbar__option-name">Кисть</span>
                         </li>
 
-                        <li class="toolbar__option">
+                        <li class="toolbar__option" data-type="eraser">
                             <img class="toolbar__option-img" alt="" src="./assets/icons/eraser.svg">
                             <span class="toolbar__option-name">Ластик</span>
                         </li>
 
-                        <li class="toolbar__option">
-                            <input type="range" min="1" max="30" class="toolbar__brush-size">
+                        <li class="toolbar__option-size">
+                            <input type="range" min="1" max="30" value="10" class="toolbar__brush-size">
                         </li>
                     </ul>
                 </div>
@@ -55,11 +55,11 @@
                     <h2 class="toolbar__title">Настройки цвета</h2>
                     <ul class="toolbar__options-colors">
                         <li class="toolbar__option-color"></li>
-                        <li class="toolbar__option-color"></li>
+                        <li class="toolbar__option-color selected"></li>
                         <li class="toolbar__option-color"></li>
                         <li class="toolbar__option-color"></li>
                         <li class="toolbar__option-color">
-                            <input type="color">
+                            <input data-color type="color" value="#4A98F7">
                         </li>
                         
                     </ul>
@@ -74,6 +74,8 @@
                 <canvas class="drawing-board__canvas" width="800px" height="500px"></canvas>
             </div>
         </div>
+
+        <script src="./assets/js/scripts.js"></script>
     </main>
 </body>
 </html>
