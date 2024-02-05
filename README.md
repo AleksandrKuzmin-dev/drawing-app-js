@@ -1,4 +1,4 @@
-# Прогноз погоды 
+# Приложение для рисования
 ![Static Badge](https://img.shields.io/badge/JavaScript-yellow)
 ![Static Badge](https://img.shields.io/badge/HTML-orange)
 ![Static Badge](https://img.shields.io/badge/CSS-blue)

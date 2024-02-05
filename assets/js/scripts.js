@@ -4,15 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
           sizeElem = document.querySelector('.toolbar__brush-size'),
           colorElems = document.querySelectorAll('.toolbar__option-color'),
           allColorsElem = document.querySelector('[data-color]'),
-          canvasElem = document.querySelector('.drawing-board__canvas');
-          const canvasCoord = canvasElem.getBoundingClientRect();
-          const ctx = canvasElem.getContext("2d", { willReadFrequently: true });
+          canvasElem = document.querySelector('.drawing-board__canvas'),
+          clearElem = document.querySelector('.toolbar__clear-btn'),
+          saveElem = document.querySelector('.toolbar__save-img'),
+          canvasCoord = canvasElem.getBoundingClientRect(),
+          ctx = canvasElem.getContext("2d", { willReadFrequently: true });
           
     const settings = {
         shapes: '',
         fill: false,
         type: 'brush',
-        size: '10',
+        size: '1',
         color: '#000',
         x: '',
         y: '',
@@ -39,10 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 changeActiveClass(singleOptionsElems, singleOptionsElems[index], 'active');
                 
                 if (elem.hasAttribute('data-shapes')){
-                    settings.type = '';
-                    settings.shapes = elem.getAttribute('data-shapes');
+                    settings.type = elem.getAttribute('data-shapes');
                 } else {
-                    settings.shapes = '';
                     fillElem.checked = false;
                     settings.fill = false;
                     settings.type = elem.getAttribute('data-type');
@@ -72,34 +72,75 @@ document.addEventListener('DOMContentLoaded', () => {
             settings.color = allColorsElem.value;
         });
 
+        clearElem.addEventListener('click', () => {
+            ctx.clearRect(0,0, canvasElem.width, canvasElem.height);
+        });
+
+        saveElem.addEventListener('click', () => {
+            saveImage();
+        });
+
     };
-
-   addEventChangeSettings();
-
-
-    /* 1. При передвижении мыши записываются координаты
-       2. При клике в отдельные переменные записываются x и y
-       3. Делается скриншот канваса
-       4. запускается функция рисования в зависимости от настроек
-       4. При отжатии мыши функция рисования прекращается
-    */
 
     function drawingStart(){
         settings.prevX = settings.x;
         settings.prevY = settings.y;
         settings.canvasCopy = ctx.getImageData(0,0, canvasElem.width, canvasElem.height);
         ctx.lineWidth = settings.size;
-        ctx.strokeStyle = settings.type == 'brush' ? settings.color : 'rgb(255,255,255)';
-        console.log(ctx.strokeStyle)
+        ctx.strokeStyle = settings.type == 'eraser' ? 'rgb(255,255,255)' : settings.color;
+        ctx.fillStyle = settings.color;
         settings.isDrawing = true;
         ctx.moveTo(settings.x, settings.y);
         ctx.beginPath();
         
-    }
+    };
+    
     function drawing() {
         ctx.putImageData(settings.canvasCopy, 0, 0);
         ctx.lineTo(settings.x, settings.y);
         ctx.stroke();
+    };
+
+    function rectangle() {
+        ctx.putImageData(settings.canvasCopy, 0, 0);
+        ctx.beginPath();
+        ctx.rect(settings.prevX, settings.prevY, settings.x - settings.prevX, settings.y - settings.prevY)
+        ctx.stroke();
+        ctx.closePath();
+
+        if(settings.fill) ctx.fill();
+    };
+
+    function circle(){
+        const radius = Math.sqrt(Math.pow(settings.prevX - settings.x, 2)) + Math.sqrt(Math.pow(settings.prevY - settings.y, 2));
+
+        ctx.putImageData(settings.canvasCopy, 0, 0);
+        ctx.beginPath();
+        ctx.arc(settings.prevX, settings.prevY, radius,50,0,2*Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+
+        if(settings.fill) ctx.fill();
+    };
+
+    function triangle() {
+        ctx.putImageData(settings.canvasCopy, 0, 0);
+        ctx.beginPath();
+        ctx.moveTo(settings.prevX, settings.prevY)
+        ctx.lineTo(settings.x, settings.y);
+        ctx.lineTo(settings.prevX - (settings.x - settings.prevX), settings.y);
+        ctx.closePath();
+        ctx.stroke();
+    
+        if(settings.fill) ctx.fill();
+    };
+
+    function saveImage(){
+        const link = document.createElement('a');
+
+        link.setAttribute("href", canvasElem.toDataURL());
+        link.setAttribute("download", `Рисунок ${Date.now(new Date())}`);
+        link.click();
     };
 
     canvasElem.addEventListener('mousedown', () => {
@@ -109,14 +150,25 @@ document.addEventListener('DOMContentLoaded', () => {
     canvasElem.addEventListener('mousemove', (e) => {
         settings.x = e.clientX - canvasCoord.x;
         settings.y = e.clientY - canvasCoord.y;
-
         if(settings.isDrawing){
             switch (settings.type) {
                 case 'brush':
                 case 'eraser':
-                        drawing();
+                    drawing();
                     break;
             
+                case 'rectangle':
+                    rectangle();
+                    break;
+
+                case 'circle':
+                    circle();
+                    break;
+
+                case 'triangle':
+                    triangle();
+                    break;
+
                 default:
                     break;
             }
@@ -125,38 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     canvasElem.addEventListener('mouseup', () => settings.isDrawing = false);
+    addEventChangeSettings();
 
-
-    /*  let draw = false;
-    const ctx = canvasElem.getContext("2d", { willReadFrequently: true })
-    let prevX;
-    let prevY;
-    let snapshot;
-
-    canvasElem.addEventListener('mousedown', () => {
-        draw=true;
-        snapshot = ctx.getImageData(0, 0, canvasElem.width, canvasElem.height);
-        
-        prevX = settings.x;
-        prevY = settings.y;
-    });
-
-    canvasElem.addEventListener('mousemove', (e) => {
-        settings.x = e.clientX - canvasCoord.x;
-        settings.y = e.clientY - canvasCoord.y;
-
-
-        if(draw == true) {
-            
-            ctx.putImageData(snapshot, 0, 0);
-            ctx.beginPath();
-            ctx.rect(prevX, prevY, settings.x - prevX, settings.y - prevY);
-            ctx.fill();
-            ctx.stroke();
-        }
-    })
-
-    canvasElem.addEventListener('mouseup', () => draw = false) */
-   
-
-})
+});
